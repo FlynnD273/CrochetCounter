@@ -11,9 +11,19 @@ config_version=5
 [application]
 
 config/name="CrochetCounter"
+run/main_scene="uid://b8axwlrq13bij"
 config/features=PackedStringArray("4.5")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="ignore"
+window/handheld/orientation=1
+
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
