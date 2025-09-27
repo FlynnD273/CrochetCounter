@@ -20,3 +20,7 @@ func child(_idx: int) -> SingleStitch:
 func _to_string() -> String:
 	return label
 
+
+func debug_to_string(indent: int = 0) -> String:
+	return _get_debug_spacing(indent) + "Single stitch " + label
+
