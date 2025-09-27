@@ -52,7 +52,7 @@ var smooth_index: float = 0:
         index = floor(smooth_index)
         var rect := get_viewport_rect()
         var parent: Control = curr_stitch_label.get_parent()
-        var center := (rect.size.x - 0) / 2
+        var center := rect.size.x / 2 - 25
         var offset := smooth_index - index
 
         prev_stitch_label.scale = (Vector2.ONE * (smoothstep(1, -1, smooth_index - index)))
@@ -63,24 +63,24 @@ var smooth_index: float = 0:
         prev_stitch_label.position.x = (
             center
             - (offset + 1) * stitch_spacing * (prev_stitch_label.scale.x + 1) / 2
-            - prev_stitch_label.size.x * prev_stitch_label.scale.x * 0.75
+            - prev_stitch_label.size.x * prev_stitch_label.scale.x / 2
         )
         curr_stitch_label.position.x = (
             center
             - offset * stitch_spacing * (curr_stitch_label.scale.x + 1) / 2
-            - curr_stitch_label.size.x * curr_stitch_label.scale.x * 0.75
+            - curr_stitch_label.size.x * curr_stitch_label.scale.x / 2
         )
         next_stitch_label.position.x = (
             center
             + stitch_spacing
             - offset * stitch_spacing * (next_stitch_label.scale.x + 1) / 2
-            - next_stitch_label.size.x * next_stitch_label.scale.x * 0.75
+            - next_stitch_label.size.x * next_stitch_label.scale.x / 2
         )
         next_next_stitch_label.position.x = (
             center
             + stitch_spacing * 1.75
             - offset * stitch_spacing * (next_next_stitch_label.scale.x + 1) / 2
-            - next_next_stitch_label.size.x * next_next_stitch_label.scale.x * 0.75
+            - next_next_stitch_label.size.x * next_next_stitch_label.scale.x / 2
         )
 
         curr_stitch_label.position.y = (
