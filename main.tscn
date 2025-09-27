@@ -128,5 +128,6 @@ size_flags_vertical = 4
 text = "  -  "
 
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/Row" to="." method="update_row"]
+[connection signal="text_submitted" from="MarginContainer/VBoxContainer/Row" to="MarginContainer/VBoxContainer/VBoxContainer/CenterContainer/Forward" method="grab_focus" unbinds=1]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/CenterContainer/Forward" to="." method="next_stitch"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/CenterContainer/Forward/Back" to="." method="prev_stitch"]
