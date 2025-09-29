@@ -217,4 +217,5 @@ func update_row(row: String) -> void:
         return
 
     add_single_stitch.call()
+    stack[0].clean_children()
     stitches = stack[0]

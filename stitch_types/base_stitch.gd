@@ -44,3 +44,13 @@ func debug_to_string(indent: int = 0) -> String:
 
 func _get_debug_spacing(indent: int) -> String:
     return "-".repeat(indent)
+
+
+func clean_children() -> void:
+    var offset := 0
+    for i in children.size():
+        var curr_idx: int = i - offset
+        children[curr_idx].clean_children()
+        if children[curr_idx].length == 0:
+            children.remove_at(curr_idx)
+            offset += 1
