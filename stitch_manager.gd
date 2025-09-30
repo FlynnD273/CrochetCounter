@@ -141,14 +141,6 @@ func prev_stitch() -> void:
     )
 
 
-func parse_single(label: String) -> BaseStitch:
-    match label:
-        "inc":
-            return IncStitch.new()
-        _:
-            return SingleStitch.new(label)
-
-
 func update_row(row: String) -> void:
     var stack: Array[BaseStitch] = [SilentStitch.new()]
     var strings := ["", ""]
@@ -161,14 +153,14 @@ func update_row(row: String) -> void:
                 var p: BaseStitch = stack.pop_back()
                 print("Stack: ", ", ".join(stack))
                 var s: BaseStitch = SilentStitch.new()
-                s.children = [p, parse_single(strings[0])]
+                s.children = [p, SingleStitch.parse(strings[0])]
                 print("Adding: ", s)
                 stack.append(s)
                 print("Stack: ", ", ".join(stack))
             else:
                 print("New repeat")
                 stack[-1].children.append(
-                    RepeatStitch.new(parse_single(strings[0]), int(strings[1]))
+                    RepeatStitch.new(SingleStitch.parse(strings[0]), int(strings[1]))
                 )
         elif strings[1] != "":
             print("Repeat last")
@@ -192,7 +184,7 @@ func update_row(row: String) -> void:
         match curr:
             "(":
                 add_single_stitch.call()
-                stack.append(BaseStitch.new())
+                stack.append(SilentStitch.new())
             ")":
                 add_single_stitch.call()
                 if stack.size() == 1:

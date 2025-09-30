@@ -24,3 +24,11 @@ func _to_string() -> String:
 func debug_to_string(indent: int = 0) -> String:
 	return _get_debug_spacing(indent) + "Single stitch " + label
 
+
+static func parse(l: String) -> SingleStitch:
+	match l:
+		"inc":
+			return IncStitch.new(l)
+		_:
+			return SingleStitch.new(l)
+
