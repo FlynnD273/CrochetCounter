@@ -5,30 +5,27 @@ var label := ""
 
 
 func _init(lbl: String) -> void:
-	label = lbl
-	children = []
+    label = lbl
+    children = []
 
 
 func _get_length() -> int:
-	return 1
+    return 1
 
 
 func child(_idx: int) -> SingleStitch:
-	return self
+    return self
 
 
 func _to_string() -> String:
-	return label
+    return label
 
 
 func debug_to_string(indent: int = 0) -> String:
-	return _get_debug_spacing(indent) + "Single stitch " + label
+    return _get_debug_spacing(indent) + "Single stitch " + label
 
 
 static func parse(l: String) -> SingleStitch:
-	match l:
-		"inc":
-			return IncStitch.new(l)
-		_:
-			return SingleStitch.new(l)
-
+    if l.ends_with("inc"):
+        return IncStitch.new(l)
+    return SingleStitch.new(l)

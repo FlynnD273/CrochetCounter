@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://b8axwlrq13bij"]
+[gd_scene load_steps=6 format=3 uid="uid://b8axwlrq13bij"]
 
 [ext_resource type="Theme" uid="uid://do2ed37wbrkem" path="res://theme.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://ckhkse3w33pyw" path="res://stitch_manager.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://mjac6pvt1wjk" path="res://focus_shortcut.gd" id="3_h2yge"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_h2yge"]
+action = &"focus_row_input"
+
+[sub_resource type="Shortcut" id="Shortcut_1bvp3"]
+events = [SubResource("InputEventAction_h2yge")]
 
 [node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("row_label", "curr_stitch_label", "next_stitch_label", "next_next_stitch_label", "prev_stitch_label", "row_progress_label")]
 anchors_preset = 15
@@ -11,6 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ig7tw")
 script = ExtResource("2_0xm2m")
+stitch_spacing = 250.0
 row_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer/RowLabel")
 curr_stitch_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Panel/CurrentStitch")
 next_stitch_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Panel/NextStitch")
@@ -28,6 +36,8 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 0
 placeholder_text = "Row notation"
+script = ExtResource("3_h2yge")
+shortcut = SubResource("Shortcut_1bvp3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
