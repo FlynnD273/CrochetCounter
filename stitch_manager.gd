@@ -111,6 +111,7 @@ var stitches := BaseStitch.new():
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(func(): smooth_index = smooth_index)
+	smooth_index = 0
 
 
 func next_stitch() -> void:
