@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1759714622|53207172';
+const CACHE_VERSION = '1759715394|825629888';
 /** @type {string} */
 const CACHE_PREFIX = 'CrochetCounter-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
