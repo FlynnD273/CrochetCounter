@@ -132,8 +132,9 @@ func next_stitch() -> void:
 func open_row_editor() -> void:
 	row_edit.rows_input.text = "\n".join(rows)
 	row_edit.popup_centered()
-	if get_viewport().get_visible_rect().size.y < row_edit.size.y:
-		row_edit.size.y = int(get_viewport().get_visible_rect().size.y - 20)
+	if row_edit.is_embedded():
+		row_edit.size.y = int(get_viewport().size.y - 70)
+		row_edit.position.y = 50
 
 
 func parse_current_row() -> void:

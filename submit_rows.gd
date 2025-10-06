@@ -13,4 +13,6 @@ func close() -> void:
 func update_manager() -> void:
 	rows.assign(rows_input.text.split("\n"))
 	rows = rows.filter(func(x): return x != "")
+	if rows.size() == 0:
+		rows = [""]
 	hide()
