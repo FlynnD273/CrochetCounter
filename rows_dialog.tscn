@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://cg1vqs7v4svre"]
+
+[ext_resource type="Theme" uid="uid://do2ed37wbrkem" path="res://theme.tres" id="1_w4ajc"]
+[ext_resource type="Script" uid="uid://dks3mef7jpr43" path="res://submit_rows.gd" id="2_6flfc"]
+
+[node name="RowsDialog" type="Window" node_paths=PackedStringArray("rows_input")]
+disable_3d = true
+oversampling_override = 1.0
+title = "Row Editor"
+position = Vector2i(0, 36)
+size = Vector2i(800, 1200)
+theme = ExtResource("1_w4ajc")
+script = ExtResource("2_6flfc")
+rows_input = NodePath("MarginContainer/VBoxContainer/CodeEdit")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 796.0
+offset_bottom = 1196.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="CodeEdit" type="CodeEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "Type one row per line here..."
+scroll_past_end_of_file = true
+highlight_current_line = true
+gutters_draw_line_numbers = true
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "OK"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CenterContainer/Button" to="." method="submit_rows"]
