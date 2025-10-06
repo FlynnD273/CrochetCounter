@@ -75,7 +75,6 @@ theme_override_constants/separation = 20
 [node name="RowLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Row"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -252,7 +251,7 @@ texture = ExtResource("4_1bvp3")
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" method="set_row"]
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus" unbinds=1]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" to="." method="next_stitch"]
+[connection signal="tree_entered" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Back" to="." method="prev_stitch"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Back" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Restart" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Restart" to="." method="set_stitch_index" binds= [0]]

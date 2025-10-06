@@ -61,6 +61,7 @@ var row := 0:
 		save.curr_row_index = row
 		if rows.size() > 0:
 			row_input.text = rows[row]
+		set_stitch_index(0)
 		parse_current_row()
 		row_changed.emit(row)
 var rows: Array[String]:
@@ -78,12 +79,6 @@ var stitches := BaseStitch.new():
 	set(val):
 		stitches = val
 		row_label.text = str(stitches)
-		smooth_index = 0
-		next_index = 0
-		if curr_tween != null:
-			curr_tween.kill()
-			curr_tween = null
-		prev_stitch()
 		stitches_changed.emit(stitches)
 
 
@@ -212,7 +207,6 @@ func parse_current_row() -> void:
 	add_single_stitch.call()
 	stack[0].clean_children()
 	stitches = stack[0]
-
 
 func prev_stitch() -> void:
 	add_stitch_index(-1)
