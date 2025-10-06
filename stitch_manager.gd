@@ -282,4 +282,3 @@ func update_row(row_str: String) -> void:
 	rows[row] = row_str
 	save.emit_changed()
 	parse_current_row()
-
