@@ -1,15 +1,16 @@
 class_name RowEditPopup
-extends Window
+extends Popup
 
-signal accepted
-
-@export var rows_input: CodeEdit
+@onready var rows_input: CodeEdit = %CodeEdit
 
 var rows: Array[String]
 
 
-func submit_rows() -> void:
+func close() -> void:
+	popup_hide.emit()
+
+
+func update_manager() -> void:
 	rows.assign(rows_input.text.split("\n"))
 	rows = rows.filter(func(x): return x != "")
 	hide()
-	accepted.emit()

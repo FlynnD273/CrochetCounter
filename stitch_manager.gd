@@ -123,7 +123,7 @@ func load_state() -> void:
 		save.changed.connect(Debouncer.debounce_func(save_state))
 	rows = save.rows
 	row = save.curr_row_index
-	smooth_index = save.curr_stitch_index
+	set_stitch_index(save.curr_stitch_index)
 
 
 func next_stitch() -> void:
@@ -145,6 +145,12 @@ func parse_current_row() -> void:
 	var strings := ["", ""]
 	var is_invalid := false
 	var add_single_stitch := func():
+		strings[0] = strings[0].strip_edges()
+		if strings[0] == "x":
+			strings[0] = ""
+		print("strings[0]: ", strings[0])
+		if strings[0].ends_with(" x"):
+			strings[0] = strings[0].substr(0, strings[0].length() - 2)
 		if strings[0] != "":
 			if strings[1] == "":
 				var p: BaseStitch = stack.pop_back()
@@ -173,8 +179,6 @@ func parse_current_row() -> void:
 		is_invalid = true
 	for i in row_str.length():
 		var curr := row_str[i]
-		if curr == " ":
-			continue
 		match curr:
 			"(":
 				add_single_stitch.call()
@@ -190,7 +194,8 @@ func parse_current_row() -> void:
 			"x" when i < row_str.length() - 1 and row_str[i + 1] == " ":
 				pass
 			"1", "2", "3", "4", "5", "6", "7", "8", "9", "0" when (
-				(i > 0 and row_str[i - 1] == " ") or strings[1] != ""
+				(i > 0 and (row_str[i - 1] == " " or strings[0].ends_with(" x")))
+				or strings[1] != ""
 			):
 				strings[1] += curr
 			",":
