@@ -132,6 +132,8 @@ func next_stitch() -> void:
 func open_row_editor() -> void:
 	row_edit.rows_input.text = "\n".join(rows)
 	row_edit.popup_centered()
+	if get_viewport().get_visible_rect().size.y < row_edit.size.y:
+		row_edit.size.y = int(get_viewport().get_visible_rect().size.y - 20)
 
 
 func parse_current_row() -> void:
@@ -208,6 +210,7 @@ func parse_current_row() -> void:
 	stack[0].clean_children()
 	stitches = stack[0]
 
+
 func prev_stitch() -> void:
 	add_stitch_index(-1)
 
@@ -279,3 +282,4 @@ func update_row(row_str: String) -> void:
 	rows[row] = row_str
 	save.emit_changed()
 	parse_current_row()
+
