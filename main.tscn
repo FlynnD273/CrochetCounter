@@ -223,11 +223,6 @@ script = ExtResource("5_lquwl")
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"BigLabel"
-text = "Row: "
-
 [node name="CurrentRow" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" node_paths=PackedStringArray("manager")]
 layout_mode = 2
 theme_type_variation = &"BigLineEdit"
