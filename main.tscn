@@ -17,24 +17,17 @@ action = &"focus_row_input"
 [sub_resource type="Shortcut" id="Shortcut_1bvp3"]
 events = [SubResource("InputEventAction_h2yge")]
 
-[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("row_label", "row_input", "curr_stitch_label", "next_stitch_label", "next_next_stitch_label", "prev_stitch_label", "row_edit")]
+[node name="PanelContainer" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_ig7tw")
 script = ExtResource("2_0xm2m")
 stitch_spacing = 250.0
-row_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer/RowLabel")
-row_input = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/Row")
-curr_stitch_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Panel/CurrentStitch")
-next_stitch_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Panel/NextStitch")
-next_next_stitch_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Panel/NextNextStitch")
-prev_stitch_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Panel/PrevStitch")
-row_edit = NodePath("RowsDialog")
 
 [node name="RowsDialog" parent="." instance=ExtResource("6_efxa6")]
+unique_name_in_owner = true
 visible = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -47,27 +40,13 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Row" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 placeholder_text = "Row notation"
 script = ExtResource("3_h2yge")
 shortcut = SubResource("Shortcut_1bvp3")
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Row:"
-
-[node name="CurrentRow" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer2" node_paths=PackedStringArray("manager")]
-layout_mode = 2
-theme_override_constants/minimum_character_width = 1
-script = ExtResource("4_5vw27")
-manager = NodePath("../../../..")
-
-[node name="TotalRows" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = " / "
-script = ExtResource("6_4c57u")
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(55, 55)
@@ -94,6 +73,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="RowLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Row"
 
@@ -114,6 +94,7 @@ custom_minimum_size = Vector2(50, 120)
 layout_mode = 2
 
 [node name="PrevStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 88.0
@@ -127,6 +108,7 @@ justification_flags = 0
 clip_text = true
 
 [node name="CurrentStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 88.0
@@ -140,6 +122,7 @@ justification_flags = 0
 clip_text = true
 
 [node name="NextStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 88.0
@@ -153,6 +136,7 @@ justification_flags = 0
 clip_text = true
 
 [node name="NextNextStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 88.0
@@ -218,40 +202,61 @@ texture = ExtResource("4_1bvp3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
 mouse_filter = 2
 
 [node name="CurrentStitch" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" node_paths=PackedStringArray("manager")]
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_constants/minimum_character_width = 1
-theme_override_font_sizes/font_size = 92
+theme = ExtResource("1_ig7tw")
+theme_type_variation = &"BigLineEdit"
 expand_to_text_length = true
 script = ExtResource("5_7mycd")
 manager = NodePath("../../../../..")
 
 [node name="TotalStitches" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 92
+theme_type_variation = &"BigLabel"
 text = " / "
 script = ExtResource("5_lquwl")
 
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"BigLabel"
+text = "Row: "
+
+[node name="CurrentRow" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" node_paths=PackedStringArray("manager")]
+layout_mode = 2
+theme_type_variation = &"BigLineEdit"
+theme_override_constants/minimum_character_width = 1
+expand_to_text_length = true
+script = ExtResource("4_5vw27")
+manager = NodePath("../../../../..")
+
+[node name="TotalRows" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"BigLabel"
+text = " / "
+script = ExtResource("6_4c57u")
+
 [connection signal="index_changed" from="." to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentStitch" method="stitch_changed"]
-[connection signal="row_changed" from="." to="MarginContainer/VBoxContainer/HBoxContainer2/CurrentRow" method="row_changed"]
-[connection signal="rows_changed" from="." to="MarginContainer/VBoxContainer/HBoxContainer2/TotalRows" method="on_rows_changed"]
+[connection signal="row_changed" from="." to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" method="row_changed"]
+[connection signal="rows_changed" from="." to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/TotalRows" method="on_rows_changed"]
 [connection signal="stitches_changed" from="." to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/TotalStitches" method="on_stitches_changed"]
 [connection signal="accepted" from="RowsDialog" to="." method="row_editor_closed"]
 [connection signal="accepted" from="RowsDialog" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/Row" to="." method="update_row"]
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/HBoxContainer2/Row" to="." method="update_row"]
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/HBoxContainer2/Row" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus" unbinds=1]
-[connection signal="text_submitted" from="MarginContainer/VBoxContainer/HBoxContainer2/CurrentRow" to="MarginContainer/VBoxContainer/HBoxContainer2/CurrentRow" method="set_row"]
-[connection signal="text_submitted" from="MarginContainer/VBoxContainer/HBoxContainer2/CurrentRow" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus" unbinds=1]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Button" to="." method="open_row_editor"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" to="." method="next_stitch"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Back" to="." method="prev_stitch"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Back" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Restart" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward/Restart" to="." method="set_stitch_index" binds= [0]]
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentStitch" to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentStitch" method="set_stitch"]
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentStitch" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus" unbinds=1]
+[connection signal="text_submitted" from="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" to="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" method="set_row"]
+[connection signal="text_submitted" from="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CurrentRow" to="MarginContainer/VBoxContainer/PanelContainer/CenterContainer/Forward" method="grab_focus" unbinds=1]

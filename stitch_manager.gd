@@ -1,23 +1,24 @@
 class_name StitchManager
 extends PanelContainer
 
-signal index_changed(int)
-signal row_changed(int)
-signal rows_changed(Array)
-signal stitches_changed(BaseStitch)
+signal index_changed(index: int)
+signal row_changed(row: int)
+signal rows_changed(rows: Array)
+signal stitches_changed(stitches: BaseStitch)
 
 const END_MARKER := ">"
 const START_MARKER := "<"
 
 @export var transition_duration := 0.2
 @export var stitch_spacing: float = 150
-@export var row_label: Label
-@export var row_input: LineEdit
-@export var curr_stitch_label: Label
-@export var next_stitch_label: Label
-@export var next_next_stitch_label: Label
-@export var prev_stitch_label: Label
-@export var row_edit: RowEditPopup
+
+@onready var row_label: Label = %RowLabel
+@onready var row_input: LineEdit = %Row
+@onready var curr_stitch_label: Label = %CurrentStitch
+@onready var next_stitch_label: Label = %NextStitch
+@onready var next_next_stitch_label: Label = %NextNextStitch
+@onready var prev_stitch_label: Label = %PrevStitch
+@onready var row_edit: RowEditPopup = %RowsDialog
 
 var SAVE_PATH = "user://state.tres"
 var curr_tween: Tween
@@ -103,7 +104,12 @@ func add_stitch_index(delta: int) -> void:
 		smooth_index = next_index
 	next_index = index + delta
 	curr_tween = create_tween()
-	curr_tween.tween_property(self, "smooth_index", next_index, transition_duration).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	(
+		curr_tween
+		. tween_property(self, "smooth_index", next_index, transition_duration)
+		. set_trans(Tween.TRANS_EXPO)
+		. set_ease(Tween.EASE_OUT)
+	)
 
 
 func load_state() -> void:
@@ -146,8 +152,14 @@ func parse_current_row() -> void:
 				s.children = [p, SingleStitch.parse(strings[0])]
 				stack.append(s)
 			else:
-				stack[-1].children.append(
-					RepeatStitch.new(SingleStitch.parse(strings[0]), int(strings[1])),
+				(
+					stack[-1]
+					. children
+					. append(
+						RepeatStitch.new(
+							SingleStitch.parse(strings[0]), int(strings[1])
+						),
+					)
 				)
 		elif strings[1] != "":
 			var p: BaseStitch = stack[-1].children.pop_back()
@@ -219,7 +231,9 @@ func set_smooth_index_positions() -> void:
 	prev_stitch_label.scale = (Vector2.ONE * (smoothstep(1, -1, smooth_index - index)))
 	curr_stitch_label.scale = (Vector2.ONE * (smoothstep(2, 0, smooth_index - index)))
 	next_stitch_label.scale = (Vector2.ONE * (smoothstep(-1, 1, smooth_index - index)))
-	next_next_stitch_label.scale = (Vector2.ONE * (smoothstep(0, 2, smooth_index - index)))
+	next_next_stitch_label.scale = (
+		Vector2.ONE * (smoothstep(0, 2, smooth_index - index))
+	)
 	prev_stitch_label.position.x = (
 		center
 		- (offset + 1) * stitch_spacing * (prev_stitch_label.scale.x + 1) / 2
@@ -250,7 +264,8 @@ func set_smooth_index_positions() -> void:
 		parent.size.y / 2 - next_stitch_label.size.y * next_stitch_label.scale.y / 2
 	)
 	next_next_stitch_label.position.y = (
-		parent.size.y / 2 - next_next_stitch_label.size.y * next_next_stitch_label.scale.y / 2
+		parent.size.y / 2
+		- next_next_stitch_label.size.y * next_next_stitch_label.scale.y / 2
 	)
 
 

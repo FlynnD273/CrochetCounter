@@ -2,6 +2,11 @@
 
 [resource]
 default_font_size = 36
+BigLabel/base_type = &"Label"
+BigLabel/font_sizes/font_size = 92
+BigLineEdit/base_type = &"LineEdit"
+BigLineEdit/font_sizes/font_size = 92
+LineEdit/constants/minimum_character_width = 1
 MarginContainer/constants/margin_bottom = 20
 MarginContainer/constants/margin_left = 20
 MarginContainer/constants/margin_right = 20
