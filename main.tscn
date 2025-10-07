@@ -24,7 +24,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_0xm2m")
-stitch_spacing = 250.0
 
 [node name="RowsDialog" parent="." instance=ExtResource("6_efxa6")]
 unique_name_in_owner = true
@@ -94,9 +93,18 @@ layout_mode = 2
 
 [node name="PrevStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 500.0
-offset_bottom = 88.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -44.0
+offset_right = 0.5
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.535, 0.535)
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
@@ -104,13 +112,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_trim_flags = 0
 justification_flags = 0
-clip_text = true
 
 [node name="CurrentStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 500.0
-offset_bottom = 88.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -44.0
+offset_right = 0.5
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.535, 0.535)
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
@@ -118,13 +134,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_trim_flags = 0
 justification_flags = 0
-clip_text = true
 
 [node name="NextStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 500.0
-offset_bottom = 88.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -44.0
+offset_right = 0.5
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.535, 0.535)
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
@@ -132,13 +156,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_trim_flags = 0
 justification_flags = 0
-clip_text = true
 
 [node name="NextNextStitch" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/Panel"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 500.0
-offset_bottom = 88.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -44.0
+offset_right = 0.5
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.535, 0.535)
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
@@ -146,7 +178,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_trim_flags = 0
 justification_flags = 0
-clip_text = true
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

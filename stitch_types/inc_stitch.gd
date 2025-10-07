@@ -4,7 +4,7 @@ extends SingleStitch
 
 func _init(lbl: String) -> void:
     super(lbl)
-    children = [SingleStitch.new(label + "₁"), SingleStitch.new(label + "₂")]
+    children = [SingleStitch.new(label + "_1"), SingleStitch.new(label + "_2")]
 
 
 func _get_length() -> int:

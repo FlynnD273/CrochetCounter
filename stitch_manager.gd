@@ -10,7 +10,6 @@ const END_MARKER := ">"
 const START_MARKER := "<"
 
 @export var transition_duration := 0.2
-@export var stitch_spacing: float = 150
 
 @onready var row_label: Label = %RowLabel
 @onready var row_input: LineEdit = %Row
@@ -25,43 +24,24 @@ var curr_tween: Tween
 var index := 0:
 	set(val):
 		index = min(stitches.length, max(val, 0))
+		index_changed.emit(index)
 		save.curr_stitch_index = index
-		if stitches.length == 0:
-			prev_stitch_label.text = "-"
-			curr_stitch_label.text = "-"
-			next_stitch_label.text = "-"
-			return
-		if index == 0:
-			prev_stitch_label.text = START_MARKER
-		else:
-			prev_stitch_label.text = str(stitches.child(index - 1))
-		if index == stitches.length - 1:
-			next_stitch_label.text = END_MARKER
-		elif index == stitches.length:
-			next_stitch_label.text = ""
-		else:
-			next_stitch_label.text = str(stitches.child(index + 1))
-		if index == stitches.length - 2:
-			next_next_stitch_label.text = END_MARKER
-		elif index >= stitches.length - 1:
-			next_next_stitch_label.text = ""
-		else:
-			next_next_stitch_label.text = str(stitches.child(index + 2))
-		if index == stitches.length:
-			curr_stitch_label.text = END_MARKER
-		else:
-			curr_stitch_label.text = str(stitches.child(index))
-var next_index: int = 0:
-	set(val):
-		next_index = min(stitches.length, max(val, 0))
-		index_changed.emit(next_index)
+		if curr_tween != null and curr_tween.is_running():
+			curr_tween.kill()
+		curr_tween = create_tween()
+		(
+			curr_tween
+			. tween_property(self, "smooth_index", index, transition_duration)
+			. set_trans(Tween.TRANS_EXPO)
+			. set_ease(Tween.EASE_OUT)
+		)
 var row := 0:
 	set(val):
 		row = max(min(rows.size() - 1, val), 0)
 		save.curr_row_index = row
 		if rows.size() > 0:
 			row_input.text = rows[row]
-		set_stitch_index(0)
+		index = 0
 		parse_current_row()
 		row_changed.emit(row)
 var rows: Array[String]:
@@ -73,17 +53,47 @@ var save: SaveState
 var smooth_index: float = 0:
 	set(val):
 		smooth_index = min(stitches.length, max(val, 0))
-		index = floor(smooth_index)
-		set_smooth_index_positions()
+		update_stitch_text()
+		update_stitch_positions()
 var stitches := BaseStitch.new():
 	set(val):
 		stitches = val
 		row_label.text = str(stitches)
 		stitches_changed.emit(stitches)
+		index = index
+
+
+func update_stitch_text() -> void:
+	var idx: int = floor(smooth_index)
+	if stitches.length == 0:
+		prev_stitch_label.text = "-"
+		curr_stitch_label.text = "-"
+		next_stitch_label.text = "-"
+		return
+	if idx == 0:
+		prev_stitch_label.text = START_MARKER
+	else:
+		prev_stitch_label.text = str(stitches.child(idx - 1))
+	if idx == stitches.length - 1:
+		next_stitch_label.text = END_MARKER
+	elif idx == stitches.length:
+		next_stitch_label.text = ""
+	else:
+		next_stitch_label.text = str(stitches.child(idx + 1))
+	if idx == stitches.length - 2:
+		next_next_stitch_label.text = END_MARKER
+	elif idx >= stitches.length - 1:
+		next_next_stitch_label.text = ""
+	else:
+		next_next_stitch_label.text = str(stitches.child(idx + 2))
+	if idx == stitches.length:
+		curr_stitch_label.text = END_MARKER
+	else:
+		curr_stitch_label.text = str(stitches.child(idx))
 
 
 func _ready() -> void:
-	get_viewport().size_changed.connect(set_smooth_index_positions)
+	get_viewport().size_changed.connect(update_stitch_positions)
 	load_state()
 
 
@@ -91,20 +101,6 @@ func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_state()
 		get_tree().quit()
-
-
-func add_stitch_index(delta: int) -> void:
-	if curr_tween != null and curr_tween.is_running():
-		curr_tween.kill()
-		smooth_index = next_index
-	next_index = index + delta
-	curr_tween = create_tween()
-	(
-		curr_tween
-		. tween_property(self, "smooth_index", next_index, transition_duration)
-		. set_trans(Tween.TRANS_EXPO)
-		. set_ease(Tween.EASE_OUT)
-	)
 
 
 func load_state() -> void:
@@ -118,15 +114,14 @@ func load_state() -> void:
 		save.changed.connect(Debouncer.debounce_func(save_state))
 	rows = save.rows
 	row = save.curr_row_index
-	set_stitch_index(save.curr_stitch_index)
+	index = save.curr_stitch_index
 
 
 func next_stitch() -> void:
 	if index == stitches.length:
 		row += 1
-		set_stitch_index(0)
 	else:
-		add_stitch_index(1)
+		index += 1
 
 
 func open_row_editor() -> void:
@@ -213,7 +208,7 @@ func parse_current_row() -> void:
 
 
 func prev_stitch() -> void:
-	add_stitch_index(-1)
+	index -= 1
 
 
 func row_editor_closed() -> void:
@@ -226,16 +221,30 @@ func save_state():
 	ResourceSaver.save(save, SAVE_PATH)
 
 
-func set_smooth_index_positions() -> void:
+func update_stitch_positions() -> void:
+	var idx: int = floor(smooth_index)
 	var rect := get_viewport_rect()
 	var parent: Control = curr_stitch_label.get_parent()
 	var center := rect.size.x / 2 - 25
-	var offset := smooth_index - index
-	prev_stitch_label.scale = (Vector2.ONE * (smoothstep(1, -1, smooth_index - index)))
-	curr_stitch_label.scale = (Vector2.ONE * (smoothstep(2, 0, smooth_index - index)))
-	next_stitch_label.scale = (Vector2.ONE * (smoothstep(-1, 1, smooth_index - index)))
+	var offset := smooth_index - idx
+	var curr_len: int = max(
+		prev_stitch_label.text.length(),
+		curr_stitch_label.text.length(),
+		next_stitch_label.text.length()
+	)
+	var next_len: int = max(
+		curr_stitch_label.text.length(),
+		next_stitch_label.text.length(),
+		next_next_stitch_label.text.length()
+	)
+	var curr_spacing: float = max(curr_len, 5) * 40
+	var next_spacing: float = max(next_len, 5) * 40
+	var stitch_spacing: float = lerp(curr_spacing, next_spacing, offset)
+	prev_stitch_label.scale = (Vector2.ONE * (smoothstep(1, -1, smooth_index - idx)))
+	curr_stitch_label.scale = (Vector2.ONE * (smoothstep(2, 0, smooth_index - idx)))
+	next_stitch_label.scale = (Vector2.ONE * (smoothstep(-1, 1, smooth_index - idx)))
 	next_next_stitch_label.scale = (
-		Vector2.ONE * (smoothstep(0, 2, smooth_index - index))
+		Vector2.ONE * (smoothstep(0, 2, smooth_index - idx))
 	)
 	prev_stitch_label.position.x = (
 		center
@@ -272,14 +281,8 @@ func set_smooth_index_positions() -> void:
 	)
 
 
-func set_stitch_index(idx: int) -> void:
-	if curr_tween != null and curr_tween.is_running():
-		curr_tween.kill()
-		smooth_index = next_index
-	add_stitch_index(idx - index)
-
-
 func update_row(row_str: String) -> void:
 	rows[row] = row_str
 	save.emit_changed()
 	parse_current_row()
+
