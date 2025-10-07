@@ -1,3 +1,4 @@
+import restart from "../public/restart.svg";
 import van from "vanjs-core";
 import "./App.css";
 import { SilentStitch } from "./utils/StitchTypes";
@@ -6,12 +7,13 @@ import Banner from "./components/Banner";
 import StitchDisplay from "./components/StitchDisplay";
 import { UserState } from "./utils/UserState";
 import ClampedState from "./utils/ClampedState";
+import Fraction from "./components/Fraction";
 
 export const App = () => {
-	const { div, button, input } = van.tags;
+	const { div, button, input, img } = van.tags;
 	const stitches = van.state(new SilentStitch());
 	const row_input = van.state("");
-	van.derive(() => stitches.val = parseStitch(row_input.val));
+	van.derive(() => { stitches.val = parseStitch(row_input.val); index.val = 0; });
 	const index = ClampedState(0, 0, van.derive(() => stitches.val.length));
 	const userstate = localStorage.getItem("userstate");
 	if (userstate) {
@@ -23,16 +25,42 @@ export const App = () => {
 		} catch (err) { }
 	}
 
+	let last_timeout = 0;
 	van.derive(() => {
-		console.log("saving");
-		localStorage.setItem("userstate", JSON.stringify(new UserState(row_input.val, index.val)));
+		const state = new UserState(row_input.val, index.val);
+		clearTimeout(last_timeout);
+		last_timeout = setTimeout(() => {
+			localStorage.setItem("userstate", JSON.stringify(state));
+		}
+			, 100);
 	});
+	const forward_button = button({ class: "pad-btn", onclick: () => index.val++ }, "+");
+	van.derive(() => { index.val; forward_button.focus() })
 	return [
-		input({ class: "full-width card", value: row_input.val, placeholder: "Enter row notation here...", oninput: e => row_input.val = e.target.value }),
+		input({
+			class: "full-width card", onkeydown: evt => {
+				if (evt.key === "Enter") {
+					row_input.val = evt.target.value
+					forward_button.focus();
+					evt.preventDefault();
+				}
+			},
+			type: "text",
+			value: row_input.val,
+			placeholder: "Enter row notation here...",
+		}),
 		div(() => stitches.val.toString()),
 		div({ class: "vert-spacer" }),
-		Banner(StitchDisplay(stitches, index)),
-		Banner(button({ style: "font-size: 0.75rem;", onclick: () => index.val-- }, "-"), button({ onclick: () => index.val++ }, "+")),
+		StitchDisplay(stitches, index),
+		Banner(
+			Fraction(index, van.derive(() => stitches.val.length)),
+			div({ class: "hor-spacer" }),
+			button({ class: "small pad-btn", onclick: () => { index.val--; forward_button.focus() } }, "-"),
+			forward_button,
+			button({ class: "small", onclick: () => { index.val = 0; forward_button.focus() } }, img({ src: restart })),
+			div({ class: "hor-spacer" }),
+			Fraction(index, van.derive(() => stitches.val.length)),
+		)
 	];
 };
 
