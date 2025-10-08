@@ -13,8 +13,8 @@ export const App = () => {
 	const { div, button, input, img } = van.tags;
 	const stitches = van.state(new SilentStitch());
 	const row_input = van.state("");
-	van.derive(() => { stitches.val = parseStitch(row_input.val); index.val = 0; });
 	const index = ClampedState(0, 0, van.derive(() => stitches.val.length));
+	van.derive(() => { stitches.val = parseStitch(row_input.val); index.val = 0; });
 	const userstate = localStorage.getItem("userstate");
 	if (userstate) {
 		try {
@@ -49,18 +49,19 @@ export const App = () => {
 			value: row_input.val,
 			placeholder: "Enter row notation here...",
 		}),
-		div(() => stitches.val.toString()),
+		div({ class: "row-display" }, () => stitches.val.toString()),
 		div({ class: "vert-spacer" }),
 		StitchDisplay(stitches, index),
 		Banner(
-			Fraction(index, van.derive(() => stitches.val.length)),
-			div({ class: "hor-spacer" }),
 			button({ class: "small pad-btn", onclick: () => { index.val--; forward_button.focus() } }, "-"),
 			forward_button,
 			button({ class: "small", onclick: () => { index.val = 0; forward_button.focus() } }, img({ src: restart })),
+		),
+		Banner(
+			Fraction(index, van.derive(() => stitches.val.length)),
 			div({ class: "hor-spacer" }),
 			Fraction(index, van.derive(() => stitches.val.length)),
-		)
+		),
 	];
 };
 

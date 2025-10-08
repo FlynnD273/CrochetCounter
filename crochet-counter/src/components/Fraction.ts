@@ -17,7 +17,7 @@ const Fraction = (numer: State<number>, denom: State<number>) => {
 				value: () => numer.val + 1,
 				oninput: evt => evt.target.size = evt.target.value.length,
 			}),
-		"/",
+		div("/"),
 		div(() => denom.val),
 	);
 };
