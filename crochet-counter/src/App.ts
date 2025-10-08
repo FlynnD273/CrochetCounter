@@ -11,6 +11,12 @@ import Fraction from "./components/Fraction";
 
 export const App = () => {
 	const { div, button, input, img } = van.tags;
+
+	const isNarrow = van.state(window.innerWidth < 710)
+	window.addEventListener("resize", () => {
+		isNarrow.val = window.innerWidth < 710
+	})
+
 	const stitches = van.state(new SilentStitch());
 	const row_input = van.state("");
 	const index = ClampedState(0, 0, van.derive(() => stitches.val.length));
@@ -52,16 +58,30 @@ export const App = () => {
 		div({ class: "row-display" }, () => stitches.val.toString()),
 		div({ class: "vert-spacer" }),
 		StitchDisplay(stitches, index),
-		Banner(
-			button({ class: "small pad-btn", onclick: () => { index.val--; forward_button.focus() } }, "-"),
-			forward_button,
-			button({ class: "small", onclick: () => { index.val = 0; forward_button.focus() } }, img({ src: restart })),
-		),
-		Banner(
-			Fraction(index, van.derive(() => stitches.val.length)),
-			div({ class: "hor-spacer" }),
-			Fraction(index, van.derive(() => stitches.val.length)),
-		),
+		() => isNarrow.val ?
+			Banner(
+				button({ class: "small pad-btn", onclick: () => { index.val--; forward_button.focus() } }, "-"),
+				forward_button,
+				button({ class: "small", onclick: () => { index.val = 0; forward_button.focus() } }, img({ src: restart })),
+			)
+			:
+			Banner(
+				Fraction(index, van.derive(() => stitches.val.length)),
+				div({ class: "hor-spacer" }),
+				button({ class: "small pad-btn", onclick: () => { index.val--; forward_button.focus() } }, "-"),
+				forward_button,
+				button({ class: "small", onclick: () => { index.val = 0; forward_button.focus() } }, img({ src: restart })),
+				div({ class: "hor-spacer" }),
+				Fraction(index, van.derive(() => stitches.val.length)),
+			),
+		() => isNarrow.val ?
+			Banner(
+				Fraction(index, van.derive(() => stitches.val.length)),
+				div({ class: "hor-spacer" }),
+				Fraction(index, van.derive(() => stitches.val.length)),
+			)
+			:
+			div(),
 	];
 };
 
