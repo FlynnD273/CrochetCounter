@@ -10,7 +10,7 @@ function strCount(val: string, search: string) {
 
 export function parseStitch(row_str: string): BaseStitch {
 	if (row_str === undefined || row_str.trim() === "") {
-		return new BaseStitch();
+		return new SilentStitch();
 	}
 	let stack: BaseStitch[] = [new SilentStitch()];
 	let label: string = "";

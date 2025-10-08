@@ -23,7 +23,7 @@ export const App = () => {
 	const stitches = van.state(new SilentStitch());
 	const all_rows = van.state([""]);
 	const row_index = ClampedState(0, 0, van.derive(() => all_rows.val.length));
-	const curr_row_val = van.derive(() => all_rows.val[row_index.val]);
+	const curr_row_val = van.derive(() => all_rows.val[row_index.val] ?? "");
 	const stitch_index = ClampedState(0, 0, van.derive(() => stitches.val.length));
 	van.derive(() => { stitches.val = parseStitch(curr_row_val.val); stitch_index.val = 0; });
 	const userstate = localStorage.getItem("userstate");
