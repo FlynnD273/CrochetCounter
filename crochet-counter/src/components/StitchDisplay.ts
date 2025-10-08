@@ -19,7 +19,7 @@ const StitchDisplay = (stitches: State<BaseStitch>, index: State<number>) => {
 
 	const curr_len = van.derive(() => Math.max(prev_stitch.val.length, curr_stitch.val.length, next_stitch.val.length));
 	const next_len = van.derive(() => Math.max(curr_stitch.val.length, next_stitch.val.length, next_next_stitch.val.length));
-	const stitch_spacing = van.derive(() => Math.max(lerp(curr_len.val, next_len.val, remainder.val), 5) * 0.6);
+	const stitch_spacing = van.derive(() => Math.max(lerp(curr_len.val, next_len.val, remainder.val) + 1, 5) * 0.6);
 	const getPosition = (offset: number, scale: State<number>) => van.derive(() => (-remainder.val + offset) * stitch_spacing.val * (scale.val + 1) / 2);
 
 	const prev_size = van.derive(() => lerp(0.5, 0, remainder.val));

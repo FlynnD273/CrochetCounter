@@ -6,9 +6,12 @@ body {
 :root {
 	--background: #0a0a0a;
 	--primary: #d4b8fc;
+	--secondary: #8b77a8;
 	--primary-accent: #151515;
 	--secondary-accent: #222;
-	font-family: Verdana, Arial, sans-serif;
+	--ui-font: Verdana, Arial, sans-serif;
+
+	font-family: var(--ui-font);
 	line-height: 1.5;
 	font-weight: 600;
 	font-size: 16pt;
@@ -110,6 +113,45 @@ button:focus {
 	flex: 1 1 0;
 	margin: auto 0;
 }
+
+.editor {
+	position: absolute;
+	display: flex;
+	height: 80%;
+	width: 90%;
+	z-index: 1;
+	overflow: auto;
+}
+
+.line-numbers {
+	padding-top: 0.2em;
+	display: flex;
+	flex-direction: column;
+	color: var(--secondary);
+}
+
+.line-numbers,
+.editor-area {
+	margin: 0.25rem;
+	font-weight: 400;
+	font-family: var(--ui-font);
+	font-size: 1rem;
+	line-gap-override: 0;
+	line-height: 1em;
+}
+
+.editor-area {
+	flex: 1 1 0;
+	min-height: calc(5em);
+	height: 0;
+	border: var(--primary) solid 1px;
+	outline: none;
+	resize: none;
+	overflow: show;
+	background: transparent;
+	color: var(--primary);
+}
+
 
 @media screen and (max-width: 600px) {
 	.fraction {

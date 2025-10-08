@@ -10,7 +10,7 @@ const Fraction = (numer: State<number>, denom: State<number>) => {
 				type: "text",
 				onkeyup: evt => {
 					if (evt.key === "Enter") {
-						numer.val = Number(evt.target?.value ?? "") - 1;
+						numer.val = parseInt(evt.target?.value ?? "") - 1;
 						evt.preventDefault();
 					}
 				},

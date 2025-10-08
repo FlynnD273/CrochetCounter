@@ -1,13 +1,38 @@
 import { BaseStitch, RepeatStitch, SilentStitch, SingleStitch } from "./StitchTypes";
 
+function escapeRegex(string: string) {
+	return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+function strCount(val: string, search: string) {
+	return (val.match(new RegExp(escapeRegex(search), "g")) || []).length
+}
+
 export function parseStitch(row_str: string): BaseStitch {
+	if (row_str === undefined || row_str.trim() === "") {
+		return new BaseStitch();
+	}
 	let stack: BaseStitch[] = [new SilentStitch()];
 	let label: string = "";
-	let count: string = "";
 	let is_invalid = false;
 
 	function addStitch() {
 		// Clean up label, ignore "x" if it's being used as a multiply symbol
+		label = label.trim();
+		let count = 0;
+		let match = label.match(/^[0-9]+/);
+		// TODO: Remove from label
+		if (match) {
+			count = parseInt(match[0]);
+			label = label.substring(match[0].length);
+		}
+		else {
+			match = label.match(/[0-9]+$/);
+			if (match) {
+				count = parseInt(match[0]);
+				label = label.substring(0, label.length - match[0].length);
+			}
+		}
 		label = label.trim();
 		if (label === "x") {
 			label = "";
@@ -17,27 +42,26 @@ export function parseStitch(row_str: string): BaseStitch {
 		}
 
 		if (label !== "") {
-			if (count == "") {
+			if (count === 0) {
 				const p = stack.pop()!;
 				const s = new SilentStitch(p, SingleStitch.parse(label));
 				stack.push(s);
 			}
 			else {
-				stack[stack.length - 1].children.push(new RepeatStitch(SingleStitch.parse(label), parseInt(count)));
+				stack[stack.length - 1].children.push(new RepeatStitch(SingleStitch.parse(label), count));
 			}
 		}
-		else if (count !== "") {
+		else if (count !== 0) {
 			const last = stack[stack.length - 1];
 			const c = last.children;
 			const p = c.splice(c.length - 1, 1)[0];
-			const s = new SilentStitch(new RepeatStitch(p, parseInt(count)));
+			const s = new SilentStitch(new RepeatStitch(p, count));
 			last.children.push(s);
 		}
 		label = "";
-		count = "";
 	}
 
-	if ((row_str.match(/\(/g) || []).length !== (row_str.match(/\)/g) || []).length) {
+	if (strCount(row_str, "[") + strCount(row_str, "(") !== strCount(row_str, ")") + strCount(row_str, "]")) {
 		row_str = "";
 		is_invalid = true;
 	}
@@ -46,10 +70,12 @@ export function parseStitch(row_str: string): BaseStitch {
 		const curr = row_str[i];
 		switch (curr) {
 			case "(":
+			case "[":
 				addStitch();
 				stack.push(new SilentStitch());
 				break;
 			case ")":
+			case "]":
 				addStitch();
 				if (stack.length === 1) {
 					is_invalid = true;
@@ -60,18 +86,6 @@ export function parseStitch(row_str: string): BaseStitch {
 				break;
 			case ",":
 				addStitch();
-				break;
-			case "1":
-			case "2":
-			case "3":
-			case "4":
-			case "5":
-			case "6":
-			case "7":
-			case "8":
-			case "9":
-			case "0":
-				count += curr;
 				break;
 			default:
 				label += curr;
