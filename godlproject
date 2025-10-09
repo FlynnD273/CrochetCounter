@@ -1,9 +1,0 @@
-description=
-icon=icon.svg
-name=CrochetCounter
-tags=
-
-[version]
-isMono=false
-repo=/godotengine/godot-builds
-tagName=4.5-stable
