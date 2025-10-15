@@ -1,5 +1,5 @@
-import restart from "../public/restart.svg";
-import notepad from "../public/notepad.svg";
+import restart from "/restart.svg";
+import notepad from "/notepad.svg";
 import van from "vanjs-core";
 import "./App.css";
 import { SilentStitch } from "./utils/StitchTypes";
