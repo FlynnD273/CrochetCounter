@@ -65,7 +65,6 @@ export const App = () => {
 				onkeydown: evt => {
 					if (evt.key === "Enter") {
 						forward_button.focus();
-						stitch_index.val = 0;
 						evt.preventDefault();
 					}
 				},
