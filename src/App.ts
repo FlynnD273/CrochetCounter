@@ -32,7 +32,12 @@ export const App = () => {
 			const userobj = JSON.parse(userstate) as UserState;
 			if (Array.isArray(userobj.rows)) {
 				all_rows.val = userobj.rows;
-				setTimeout(() => { row_index.val = userobj.row_index; stitch_index.val = userobj.stitch_index; }, 0);
+				setTimeout(() => {
+					row_index.val = userobj.row_index;
+					setTimeout(() => {
+						stitch_index.val = userobj.stitch_index;
+					}, 0);
+				}, 0);
 			}
 		} catch (err) { }
 	}
