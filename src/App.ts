@@ -1,4 +1,5 @@
 import restart from "/restart.svg";
+import share from "/share.svg";
 import notepad from "/notepad.svg";
 import van from "vanjs-core";
 import "./App.css";
@@ -10,6 +11,9 @@ import { UserState } from "./utils/UserState";
 import ClampedState from "./utils/ClampedState";
 import Fraction from "./components/Fraction";
 import Editor from "./components/Editor";
+import Toast from "./components/Toast";
+
+const root = document.getElementById("app") as HTMLElement;
 
 export const App = () => {
 	const { div, button, input, img } = van.tags;
@@ -26,31 +30,61 @@ export const App = () => {
 	const curr_row_val = van.derive(() => all_rows.val[row_index.val] ?? "");
 	const stitch_index = ClampedState(0, 0, van.derive(() => stitches.val.length));
 	van.derive(() => { stitches.val = parseStitch(curr_row_val.val); stitch_index.val = 0; });
-	const userstate = localStorage.getItem("userstate");
-	if (userstate) {
-		try {
-			const userobj = JSON.parse(userstate) as UserState;
-			if (Array.isArray(userobj.rows)) {
-				all_rows.val = userobj.rows;
-				setTimeout(() => {
-					row_index.val = userobj.row_index;
-					setTimeout(() => {
-						stitch_index.val = userobj.stitch_index;
-					}, 0);
-				}, 0);
-			}
-		} catch (err) { }
-	}
 
 	let last_timeout = 0;
+	let state = new UserState(all_rows.rawVal, stitch_index.rawVal, row_index.rawVal);
 	van.derive(() => {
-		const state = new UserState(all_rows.val, stitch_index.val, row_index.val);
+		state = new UserState(all_rows.val, stitch_index.val, row_index.val);
 		clearTimeout(last_timeout);
 		last_timeout = setTimeout(() => {
-			localStorage.setItem("userstate", JSON.stringify(state));
+			const json = JSON.stringify(state);
+			localStorage.setItem("userstate", json);
 		}
 			, 100);
 	});
+
+	const search = new URLSearchParams(location.search);
+	let isValidSearchParams = true;
+	const newState = new UserState([], 0, 0);
+	for (const key of Object.keys(state)) {
+		const val = search.get(key);
+		if (val === null) {
+			isValidSearchParams = false;
+		}
+		else {
+			newState[key] = val;
+		}
+	}
+	if (isValidSearchParams) {
+		van.add(root, Toast("Loaded pattern from URL"));
+		const url = new URL(location.href);
+		url.search = "";
+		history.replaceState(null, "", url.toString());
+		all_rows.val = (newState.rows + "").split("\n");
+		setTimeout(() => {
+			row_index.val = newState.row_index;
+			setTimeout(() => {
+				stitch_index.val = newState.stitch_index;
+			}, 0);
+		}, 0);
+	}
+	else {
+		const userstate = localStorage.getItem("userstate");
+		if (userstate) {
+			try {
+				const userobj = JSON.parse(userstate) as UserState;
+				if (Array.isArray(userobj.rows)) {
+					all_rows.val = userobj.rows;
+					setTimeout(() => {
+						row_index.val = userobj.row_index;
+						setTimeout(() => {
+							stitch_index.val = userobj.stitch_index;
+						}, 0);
+					}, 0);
+				}
+			} catch (err) { }
+		}
+	}
 	const forward_button = button({
 		class: "pad-btn", onclick: () => {
 			if (stitch_index.val === stitches.val.length) {
@@ -62,9 +96,26 @@ export const App = () => {
 			}
 		}
 	}, "+");
+	document.onkeydown = evt => {
+		if (evt.key === "Escape") {
+			editor_is_open.val = false;
+			forward_button.focus();
+			evt.preventDefault();
+		}
+	}
+	const share_img = van.state(share);
+	const share_button = button({ style: "height: 50%", onclick: share_button_onclick }, img({ style: "width: 100%; height: 100%", src: () => share_img.val }));
+	function share_button_onclick() {
+		van.add(root, Toast("Copied to clipboard"));
+		const url = new URL(window.location.href);
+		url.searchParams.set("stitch_index", state.stitch_index + "");
+		url.searchParams.set("row_index", state.row_index + "");
+		url.searchParams.set("rows", state.rows.join("\n"));
+		navigator.clipboard.writeText(url.toString());
+	}
 	return [
 		() => editor_is_open.val ? Editor(all_rows) : div(),
-		div({ style: "display: flex" },
+		div({ style: "display: flex; gap: 0.5rem;" },
 			input({
 				class: "full-width card",
 				onkeydown: evt => {
@@ -83,6 +134,7 @@ export const App = () => {
 				placeholder: "Enter row notation here...",
 			}),
 			button({ style: "z-index: 5;", onclick: () => editor_is_open.val = !editor_is_open.val }, img({ src: notepad })),
+			share_button,
 		),
 		div({ class: "row-display" }, () => stitches.val.toString()),
 		div({ class: "vert-spacer" }),
@@ -114,6 +166,5 @@ export const App = () => {
 	];
 };
 
-const root = document.getElementById("app") as HTMLElement;
 
 van.add(root, App());

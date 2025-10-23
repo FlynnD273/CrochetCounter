@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50"
+   height="50"
+   viewBox="0 0 50 50"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="share.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="11.071042"
+     inkscape:cx="35.949644"
+     inkscape:cy="16.168307"
+     inkscape:window-width="2560"
+     inkscape:window-height="1358"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <rect
+       x="0"
+       y="0"
+       width="50"
+       height="50"
+       id="rect1" />
+  </defs>
+  <path
+     id="path6"
+     style="fill:#ffffff;stroke:none;stroke-width:5;stroke-dasharray:none"
+     inkscape:label="Link Top"
+     d="M 37.53125 0 A 12.5 12.5 0 0 0 28.494141 3.8652344 L 22.070312 10.289062 A 15 15 0 0 1 25 10 A 15 15 0 0 1 28.882812 10.511719 L 32.416016 6.9785156 L 32.435547 6.9980469 A 7.5 7.5 0 0 1 37.53125 5 A 7.5 7.5 0 0 1 45.03125 12.5 A 7.5 7.5 0 0 1 42.628906 18.001953 L 30.316406 30.316406 L 30.302734 30.302734 A 7.5 7.5 0 0 1 25 32.5 A 7.5 7.5 0 0 1 17.513672 25.455078 L 13.375 29.59375 A 12.5 12.5 0 0 0 25 37.5 A 12.5 12.5 0 0 0 33.837891 33.837891 L 46.146484 21.556641 A 12.5 12.5 0 0 0 50.03125 12.5 A 12.5 12.5 0 0 0 37.53125 0 z " />
+  <path
+     id="path15"
+     style="fill:#ffffff;stroke:none;stroke-width:5;stroke-dasharray:none"
+     inkscape:label="Link Bottom"
+     d="M 24.8125 12.71875 A 12.5 12.5 0 0 0 15.775391 16.583984 L 4.03125 28.328125 A 12.5 12.5 0 0 0 -0.21875 37.71875 A 12.5 12.5 0 0 0 12.28125 50.21875 A 12.5 12.5 0 0 0 21.119141 46.556641 L 27.992188 39.699219 A 15 15 0 0 1 25 40 A 15 15 0 0 1 21.138672 39.494141 L 17.597656 43.035156 L 17.583984 43.021484 A 7.5 7.5 0 0 1 12.28125 45.21875 A 7.5 7.5 0 0 1 4.78125 37.71875 A 7.5 7.5 0 0 1 6.9785156 32.416016 L 19.697266 19.697266 L 19.716797 19.716797 A 7.5 7.5 0 0 1 24.8125 17.71875 A 7.5 7.5 0 0 1 32.298828 24.771484 L 36.439453 20.630859 A 12.5 12.5 0 0 0 24.8125 12.71875 z " />
+</svg>

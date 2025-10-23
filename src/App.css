@@ -168,3 +168,35 @@ button:focus {
 		padding: 0.5rem;
 	}
 }
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+	}
+
+	20% {
+		opacity: 1;
+	}
+
+	80% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+.toast {
+	position: absolute;
+	z-index: 20;
+	pointer-events: none;
+	background: var(--primary);
+	color: var(--secondary-accent);
+	animation: fadeInOut 2s ease forwards;
+	padding: 0.5em;
+	border-radius: 100vh;
+	left: 50%;
+	top: 20%;
+	transform: translateX(-50%) translateY(-50%);
+}
