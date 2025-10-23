@@ -114,7 +114,7 @@ export const App = () => {
 		navigator.clipboard.writeText(url.toString());
 	}
 	return [
-		() => editor_is_open.val ? Editor(all_rows) : div(),
+		() => editor_is_open.val ? Editor(all_rows) : div({ style: "display: none" }),
 		div({ style: "display: flex; gap: 0.5rem;" },
 			input({
 				class: "full-width card",
