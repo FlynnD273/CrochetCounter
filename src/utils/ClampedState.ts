@@ -29,7 +29,7 @@ const ClampedState = (value: number, min: number | State<number>, max: number | 
 				return true;
 			}
 			target[p] = newValue;
-			return true
+			return true;
 		},
 	})
 }

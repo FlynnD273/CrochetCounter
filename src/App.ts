@@ -86,7 +86,7 @@ export const App = () => {
 		}
 	}
 	const forward_button = button({
-		class: "pad-btn", onclick: () => {
+		class: "pad-btn middle", onclick: () => {
 			if (stitch_index.val === stitches.val.length) {
 				stitch_index.val = 0;
 				row_index.val++;
@@ -141,17 +141,17 @@ export const App = () => {
 		StitchDisplay(stitches, stitch_index),
 		() => isNarrow.val ?
 			Banner(
-				button({ class: "small pad-btn", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
+				button({ class: "pad-btn left", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
 				forward_button,
-				button({ class: "small", onclick: () => { stitch_index.val = 0; forward_button.focus() } }, img({ src: restart })),
+				button({ class: "right", onclick: () => { stitch_index.val = 0; forward_button.focus() } }, img({ src: restart })),
 			)
 			:
 			Banner(
 				Fraction(stitch_index, van.derive(() => stitches.val.length)),
 				div({ class: "hor-spacer" }),
-				button({ class: "small pad-btn", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
+				button({ class: "pad-btn left", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
 				forward_button,
-				button({ class: "small", onclick: () => { stitch_index.val = 0; forward_button.focus() } }, img({ src: restart })),
+				button({ class: "right", onclick: () => { stitch_index.val = 0; forward_button.focus() } }, img({ src: restart })),
 				div({ class: "hor-spacer" }),
 				Fraction(row_index, van.derive(() => all_rows.val.length)),
 			),

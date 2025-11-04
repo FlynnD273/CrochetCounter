@@ -35,10 +35,6 @@ body {
 	gap: 0.25em;
 }
 
-.small {
-	transform: scale(0.5);
-}
-
 .full-width {
 	width: 100%;
 }
@@ -83,6 +79,20 @@ input {
 .pad-btn {
 	padding-left: 0.25em;
 	padding-right: 0.25em;
+}
+
+.left {
+	position: absolute;
+	transform: translateX(-2.25rem) scale(0.5);
+}
+
+.middle {
+	position: absolute;
+}
+
+.right {
+	position: absolute;
+	transform: translateX(2.25rem) scale(0.5);
 }
 
 button:focus {
