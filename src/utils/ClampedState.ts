@@ -20,7 +20,12 @@ const ClampedState = (value: number, min: number | State<number>, max: number | 
 	return new Proxy(state, {
 		set(target: State<number>, p: string, newValue: number) {
 			if (p === "val") {
-				target.val = clamp(newValue, getVal(min), getVal(max));
+				if (Number.isNaN(newValue)) {
+					target.val = getVal(min);
+				}
+				else {
+					target.val = clamp(newValue, getVal(min), getVal(max));
+				}
 				return true;
 			}
 			target[p] = newValue;
