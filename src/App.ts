@@ -43,6 +43,16 @@ export const App = () => {
 			, 100);
 	});
 
+	const setFromState = (state: UserState) => {
+		all_rows.val = state.rows;
+		Promise.resolve().then(() => {
+			row_index.val = state.row_index;
+			Promise.resolve().then(() => {
+				stitch_index.val = state.stitch_index;
+			});
+		});
+	};
+
 	const search = new URLSearchParams(location.search);
 	let isValidSearchParams = true;
 	const newState = new UserState([], 0, 0);
@@ -60,28 +70,15 @@ export const App = () => {
 		const url = new URL(location.href);
 		url.search = "";
 		history.replaceState(null, "", url.toString());
-		all_rows.val = (newState.rows + "").split("\n");
-		setTimeout(() => {
-			row_index.val = newState.row_index;
-			setTimeout(() => {
-				stitch_index.val = newState.stitch_index;
-			}, 0);
-		}, 0);
+		newState.rows = (newState.rows + "").split("\n");
+		setFromState(newState);
 	}
 	else {
 		const userstate = localStorage.getItem("userstate");
 		if (userstate) {
 			try {
 				const userobj = JSON.parse(userstate) as UserState;
-				if (Array.isArray(userobj.rows)) {
-					all_rows.val = userobj.rows;
-					setTimeout(() => {
-						row_index.val = userobj.row_index;
-						setTimeout(() => {
-							stitch_index.val = userobj.stitch_index;
-						}, 0);
-					}, 0);
-				}
+				setFromState(userobj);
 			} catch (err) { }
 		}
 	}

@@ -8,16 +8,16 @@ const Fraction = (numer: State<number>, denom: State<number>) => {
 			type: "text",
 			onkeyup: evt => {
 				if (evt.key === "Enter") {
-					numer.val = parseInt(evt.target?.value ?? "") - 1;
-					updateSize();
+					const val = parseInt(evt.target?.value ?? "") - 1;
+					numer.val = val + 1;
+					Promise.resolve().then(() => numer.val = val);
 					evt.preventDefault();
 				}
 			},
 			value: () => numer.val + 1,
 			oninput: evt => evt.target.size = evt.target.value.length,
 		});
-	var updateSize = () => { numerator.size = (numer.val + 1).toString().length; numerator.value = numer.val + 1 + ""; };
-	van.derive(updateSize);
+	van.derive(() => numerator.size = (numer.val + 1).toString().length);
 	return div({ class: "fraction" },
 		numerator,
 		div("/"),
