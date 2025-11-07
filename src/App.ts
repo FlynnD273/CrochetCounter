@@ -82,12 +82,6 @@ export const App = () => {
 			} catch (err) { }
 		}
 	}
-	document.onkeydown = evt => {
-		if (evt.key === "Escape") {
-			editor_is_open.val = false;
-			evt.preventDefault();
-		}
-	}
 	const share_img = van.state(share);
 	const share_button = button({ style: "height: 50%", onclick: share_button_onclick }, img({ style: "width: 100%; height: 100%", src: () => share_img.val }));
 	function share_button_onclick() {
@@ -110,7 +104,13 @@ export const App = () => {
 			}
 		}
 	}, "+");
-
+	document.onkeydown = evt => {
+		if (evt.key === "Escape") {
+			editor_is_open.val = false;
+			forward_button.focus();
+			evt.preventDefault();
+		}
+	}
 	setTimeout(() => forward_button.focus(), 0);
 	return [
 		() => editor_is_open.val ? Editor(all_rows) : div({ style: "display: none" }),
