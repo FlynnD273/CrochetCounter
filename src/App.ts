@@ -23,6 +23,7 @@ export const App = () => {
 		isNarrow.val = window.innerWidth < 710
 	})
 
+	const title = van.state("");
 	const editor_is_open = van.state(false);
 	const stitches = van.state(new SilentStitch());
 	const all_rows = van.state([""]);
@@ -32,9 +33,9 @@ export const App = () => {
 	van.derive(() => { stitches.val = parseStitch(curr_row_val.val); stitch_index.val = 0; });
 
 	let last_timeout = 0;
-	let state = new UserState(all_rows.rawVal, stitch_index.rawVal, row_index.rawVal);
+	let state = new UserState(all_rows.rawVal, stitch_index.rawVal, row_index.rawVal, title.rawVal);
 	van.derive(() => {
-		state = new UserState(all_rows.val, stitch_index.val, row_index.val);
+		state = new UserState(all_rows.val, stitch_index.val, row_index.val, title.val);
 		clearTimeout(last_timeout);
 		last_timeout = setTimeout(() => {
 			const json = JSON.stringify(state);
@@ -44,6 +45,7 @@ export const App = () => {
 	});
 
 	const setFromState = (state: UserState) => {
+		title.val = state.title;
 		all_rows.val = state.rows;
 		Promise.resolve().then(() => {
 			row_index.val = state.row_index;
@@ -54,14 +56,12 @@ export const App = () => {
 	};
 
 	const search = new URLSearchParams(location.search);
-	let isValidSearchParams = true;
-	const newState = new UserState([], 0, 0);
+	let isValidSearchParams = false;
+	const newState = new UserState([], 0, 0, "");
 	for (const key of Object.keys(state)) {
 		const val = search.get(key);
-		if (val === null) {
-			isValidSearchParams = false;
-		}
-		else {
+		if (val !== null) {
+			isValidSearchParams = true;
 			newState[key] = val;
 		}
 	}
@@ -82,21 +82,9 @@ export const App = () => {
 			} catch (err) { }
 		}
 	}
-	const forward_button = button({
-		class: "pad-btn middle", onclick: () => {
-			if (stitch_index.val === stitches.val.length) {
-				stitch_index.val = 0;
-				row_index.val++;
-			}
-			else {
-				stitch_index.val++
-			}
-		}
-	}, "+");
 	document.onkeydown = evt => {
 		if (evt.key === "Escape") {
 			editor_is_open.val = false;
-			forward_button.focus();
 			evt.preventDefault();
 		}
 	}
@@ -108,10 +96,27 @@ export const App = () => {
 		url.searchParams.set("stitch_index", state.stitch_index + "");
 		url.searchParams.set("row_index", state.row_index + "");
 		url.searchParams.set("rows", state.rows.join("\n"));
+		url.searchParams.set("title", state.title);
 		navigator.clipboard.writeText(url.toString());
 	}
+	const forward_button = button({
+		class: "pad-btn middle", onclick: () => {
+			if (stitch_index.val === stitches.val.length) {
+				stitch_index.val = 0;
+				row_index.val++;
+			}
+			else {
+				stitch_index.val++
+			}
+		}
+	}, "+");
+
+	setTimeout(() => forward_button.focus(), 0);
 	return [
 		() => editor_is_open.val ? Editor(all_rows) : div({ style: "display: none" }),
+		input({
+			class: "card title", type: "text", placeholder: "Pattern Title", value: () => title.val, oninput: evt => title.val = evt.target.value
+		}),
 		div({ style: "display: flex; gap: 0.5rem;" },
 			input({
 				class: "full-width card",
