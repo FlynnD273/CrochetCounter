@@ -60,7 +60,7 @@ export const App = () => {
 	const newState = new UserState([], 0, 0, "");
 	for (const key of Object.keys(state)) {
 		const val = search.get(key);
-		if (val !== undefined) {
+		if (val) {
 			isValidSearchParams = true;
 			newState[key] = val;
 		}
