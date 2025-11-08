@@ -145,7 +145,7 @@ export const App = () => {
 			Banner(
 				button({ class: "pad-btn left", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
 				forward_button,
-				button({ class: "right", onclick: () => { stitch_index.val = 0; forward_button.focus() } }, img({ src: restart })),
+				button({ class: "right", onclick: () => { row_index.val = 0; Promise.resolve().then(() => stitch_index.val = 0); forward_button.focus() } }, img({ src: restart })),
 			)
 			:
 			Banner(
@@ -153,7 +153,7 @@ export const App = () => {
 				div({ class: "hor-spacer" }),
 				button({ class: "pad-btn left", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
 				forward_button,
-				button({ class: "right", onclick: () => { stitch_index.val = 0; forward_button.focus() } }, img({ src: restart })),
+				button({ class: "right", onclick: () => { row_index.val = 0; Promise.resolve().then(() => stitch_index.val = 0); forward_button.focus() } }, img({ src: restart })),
 				div({ class: "hor-spacer" }),
 				Fraction(row_index, van.derive(() => all_rows.val.length)),
 			),
