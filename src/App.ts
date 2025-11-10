@@ -111,7 +111,8 @@ export const App = () => {
 			evt.preventDefault();
 		}
 	}
-	setTimeout(() => forward_button.focus(), 0);
+	let can_edit_row = false;
+	setTimeout(() => { forward_button.focus(); can_edit_row = true; }, 0);
 	return [
 		() => editor_is_open.val ? Editor(all_rows) : div({ style: "display: none" }),
 		input({
@@ -127,9 +128,11 @@ export const App = () => {
 					}
 				},
 				oninput: evt => {
-					const new_rows = all_rows.val;
-					new_rows[row_index.val] = evt.target.value;
-					all_rows.val = [...new_rows];
+					if (can_edit_row) {
+						const new_rows = all_rows.val;
+						new_rows[row_index.val] = evt.target.value;
+						all_rows.val = [...new_rows];
+					}
 				},
 				type: "text",
 				value: () => curr_row_val.val,
