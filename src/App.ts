@@ -111,8 +111,19 @@ export const App = () => {
 			const json = JSON.stringify(state);
 			localStorage.setItem("userstate", json);
 		}
-			, 100);
+			, 200);
 	});
+
+	const back = () => {
+		if (stitch_index.val == 0 && row_index.rawVal > 0) {
+			stitch_index.val = stitches.rawVal.length - 1;
+			setTimeout(() => row_index.val--, 20);
+		}
+		else {
+			stitch_index.val--;
+		}
+		forward_button.focus();
+	};
 	return [
 		() => editor_is_open.val ? Editor(all_rows) : div({ style: "display: none" }),
 		input({
@@ -144,7 +155,7 @@ export const App = () => {
 		StitchDisplay(stitches, stitch_index),
 		() => isNarrow.val ?
 			Banner(
-				button({ class: "pad-btn left", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
+				button({ class: "pad-btn left", onclick: back }, "-"),
 				forward_button,
 				button({ class: "right", onclick: () => { row_index.val = 0; Promise.resolve().then(() => stitch_index.val = 0); forward_button.focus() } }, img({ src: restart })),
 			)
@@ -152,7 +163,7 @@ export const App = () => {
 			Banner(
 				Fraction(stitch_index, van.derive(() => stitches.val.length)),
 				div({ class: "hor-spacer" }),
-				button({ class: "pad-btn left", onclick: () => { stitch_index.val--; forward_button.focus() } }, "-"),
+				button({ class: "pad-btn left", onclick: back }, "-"),
 				forward_button,
 				button({ class: "right", onclick: () => { row_index.val = 0; Promise.resolve().then(() => stitch_index.val = 0); forward_button.focus() } }, img({ src: restart })),
 				div({ class: "hor-spacer" }),

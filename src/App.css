@@ -140,7 +140,7 @@ button:focus {
 	height: 80%;
 	width: 90%;
 	z-index: 1;
-	overflow: auto;
+	overflow: none;
 }
 
 .line-numbers {
@@ -167,7 +167,8 @@ button:focus {
 	border: var(--primary) solid 1px;
 	outline: none;
 	resize: none;
-	overflow: show;
+	overflow: scroll;
+	white-space: nowrap;
 	background: transparent;
 	color: var(--primary);
 }
