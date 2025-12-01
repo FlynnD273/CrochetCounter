@@ -29,7 +29,7 @@ export const App = () => {
 	const all_rows = van.state([""]);
 	const row_index = ClampedState(0, 0, van.derive(() => all_rows.val.length));
 	const curr_row_val = van.derive(() => all_rows.val[row_index.val] ?? "");
-	const stitch_index = ClampedState(0, 0, van.derive(() => stitches.val.length));
+	const stitch_index = ClampedState(0, -1, van.derive(() => stitches.val.length));
 	van.derive(() => { stitches.val = parseStitch(curr_row_val.val); stitch_index.val = 0; });
 
 	let last_timeout = 0;
@@ -115,9 +115,10 @@ export const App = () => {
 	});
 
 	const back = () => {
-		if (stitch_index.val == 0 && row_index.rawVal > 0) {
+		if (stitch_index.val == -1 && row_index.rawVal > 0) {
 			stitch_index.val = stitches.rawVal.length - 1;
-			setTimeout(() => row_index.val--, 20);
+			row_index.val--;
+			setTimeout(() => stitch_index.val = stitches.rawVal.length - 1, 0);
 		}
 		else {
 			stitch_index.val--;

@@ -12,10 +12,10 @@ const StitchDisplay = (stitches: State<BaseStitch>, index: State<number>) => {
 	const snapped_index = van.derive(() => Math.floor(smooth_index.val));
 	const remainder = van.derive(() => smooth_index.val - Math.floor(smooth_index.val));
 	const { div } = van.tags;
-	const prev_stitch = van.derive(() => snapped_index.val === 0 ? "<" : stitches.val.getChild(snapped_index.val - 1)?.toString() ?? "");
-	const curr_stitch = van.derive(() => snapped_index.val == stitches.val.length ? ">" : stitches.val.getChild(snapped_index.val)?.toString() ?? "");
-	const next_stitch = van.derive(() => snapped_index.val == stitches.val.length - 1 ? ">" : stitches.val.getChild(snapped_index.val + 1)?.toString() ?? "");
-	const next_next_stitch = van.derive(() => snapped_index.val == stitches.val.length - 2 ? ">" : stitches.val.getChild(snapped_index.val + 2)?.toString() ?? "");
+	const prev_stitch = van.derive(() => snapped_index.val === -1 ? "" : snapped_index.val === 0 ? "<" : stitches.val.getChild(snapped_index.val - 1)?.toString() ?? "");
+	const curr_stitch = van.derive(() => snapped_index.val === -1 ? "<" : snapped_index.val === stitches.val.length ? ">" : stitches.val.getChild(snapped_index.val)?.toString() ?? "");
+	const next_stitch = van.derive(() => snapped_index.val === stitches.val.length - 1 ? ">" : stitches.val.getChild(snapped_index.val + 1)?.toString() ?? "");
+	const next_next_stitch = van.derive(() => snapped_index.val === stitches.val.length - 2 ? ">" : stitches.val.getChild(snapped_index.val + 2)?.toString() ?? "");
 
 	const curr_len = van.derive(() => Math.max(prev_stitch.val.length, curr_stitch.val.length, next_stitch.val.length));
 	const next_len = van.derive(() => Math.max(curr_stitch.val.length, next_stitch.val.length, next_next_stitch.val.length));

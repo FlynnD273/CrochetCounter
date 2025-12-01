@@ -62,6 +62,9 @@ export class SingleStitch extends BaseStitch {
 	}
 
 	static parse(label: string): SingleStitch {
+		if (label.endsWith("sinc")) {
+			return new SincStitch(label);
+		}
 		if (label.endsWith("inc")) {
 			return new IncStitch(label);
 		}
@@ -99,6 +102,21 @@ export class RepeatStitch extends BaseStitch {
 export class SilentStitch extends BaseStitch {
 	toString(): string {
 		return this.children.join(", ");
+	}
+}
+
+export class SincStitch extends SingleStitch {
+	constructor(label: string) {
+		super(label);
+		this.children = [new SingleStitch(`${label}_1`), new SingleStitch(`${label}_2`), new SingleStitch(`${label}_3`)];
+	}
+
+	get length() {
+		return 3
+	}
+
+	getChild(idx: number): SingleStitch | undefined {
+		return this.children[idx] as SingleStitch;
 	}
 }
 
