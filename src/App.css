@@ -4,6 +4,7 @@ body {
 }
 
 :root {
+	--stitch-size: 3rem;
 	--background: #0a0a0a;
 	--primary: #d4b8fc;
 	--secondary: #8b77a8;
@@ -58,10 +59,18 @@ input {
 	margin: 0 auto;
 }
 
+.stitch-banner {
+	height: calc(var(--stitch-size) + 1rem);
+}
+
+.banner {
+	height: calc(1em + 1rem);
+}
+
+.stitch-banner,
 .banner {
 	font-size: 1.5rem;
 	width: calc(100% - 0.5rem);
-	height: calc(1em + 1rem);
 	background: var(--secondary-accent);
 	padding: 0.5rem;
 	border-radius: 0.5rem;
@@ -83,7 +92,7 @@ input {
 
 .left {
 	position: absolute;
-	transform: translateX(-2.25rem) scale(0.5);
+	transform: translateX(-2.5rem) scale(0.5);
 }
 
 .middle {
@@ -92,7 +101,7 @@ input {
 
 .right {
 	position: absolute;
-	transform: translateX(2.25rem) scale(0.5);
+	transform: translateX(2.5rem) scale(0.25);
 }
 
 button:focus {
@@ -102,6 +111,16 @@ button:focus {
 
 .stitch {
 	position: absolute;
+	font-size: var(--stitch-size);
+}
+
+.stitch.highlight {
+	background: var(--primary);
+	color: var(--primary-accent);
+	border-radius: 0.25em;
+	padding: 0;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .title {
@@ -132,6 +151,17 @@ button:focus {
 .fraction>div {
 	flex: 1 1 0;
 	margin: auto 0;
+}
+
+.notepad-open {
+	position: absolute;
+	top: 0.1rem;
+	right: 0.1rem;
+}
+
+.notepad-open>img {
+	width: 1.5rem;
+	height: 1.5rem;
 }
 
 .editor {
@@ -174,19 +204,23 @@ button:focus {
 }
 
 
+
 @media screen and (max-width: 600px) {
 	.fraction {
 		font-size: 1.25rem;
 	}
 
-	.row-display,
-	.stitch {
+	.row-display {
 		font-size: 0.75em;
-		;
+	}
+
+	.stitch {
+		font-size: calc(var(--stitch-size) * 0.5);
 	}
 
 	#app {
 		padding: 0.5rem;
+		padding-top: 2rem;
 	}
 }
 

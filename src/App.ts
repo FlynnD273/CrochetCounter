@@ -148,7 +148,7 @@ export const App = () => {
 				value: () => curr_row_val.val,
 				placeholder: "Enter row notation here...",
 			}),
-			button({ style: "z-index: 5;", onclick: () => editor_is_open.val = !editor_is_open.val }, img({ src: notepad })),
+			button({ class: () => editor_is_open.val ? "notepad-open" : "", style: "z-index: 5;", onclick: () => editor_is_open.val = !editor_is_open.val }, img({ src: notepad })),
 			share_button,
 		),
 		div({ class: "row-display" }, () => stitches.val.toString()),

@@ -21,7 +21,6 @@ export function parseStitch(row_str: string): BaseStitch {
 		label = label.trim();
 		let count = 0;
 		let match = label.match(/^[0-9]+/);
-		// TODO: Remove from label
 		if (match) {
 			count = parseInt(match[0]);
 			label = label.substring(match[0].length);

@@ -22,21 +22,43 @@ const StitchDisplay = (stitches: State<BaseStitch>, index: State<number>) => {
 	const stitch_spacing = van.derive(() => Math.max(lerp(curr_len.val, next_len.val, remainder.val) + 1, 5) * 0.6);
 	const getPosition = (offset: number, scale: State<number>) => van.derive(() => (-remainder.val + offset) * stitch_spacing.val * (scale.val + 1) / 2);
 
-	const prev_size = van.derive(() => lerp(0.5, 0, remainder.val));
-	const curr_size = van.derive(() => lerp(1, 0.5, remainder.val));
-	const next_size = van.derive(() => lerp(0.5, 1, remainder.val));
-	const next_next_size = van.derive(() => lerp(0, 0.5, remainder.val));
+	const prev_size = van.derive(() => lerp(0.25, 0, remainder.val));
+	const curr_size = van.derive(() => lerp(1, 0.25, remainder.val));
+	const next_size = van.derive(() => lerp(0.25, 1, remainder.val));
+	const next_next_size = van.derive(() => lerp(0, 0.25, remainder.val));
 
 	const prev_pos = getPosition(-1, prev_size);
 	const curr_pos = getPosition(0, curr_size);
 	const next_pos = getPosition(1, next_size);
 	const next_next_pos = getPosition(2, next_next_size);
 
-	return Banner(
-		div({ class: "stitch", style: () => `transform: translateX(${prev_pos.val}em) scale(${prev_size.val});` }, prev_stitch),
-		div({ class: "stitch", style: () => `transform: translateX(${curr_pos.val}em) scale(${curr_size.val});` }, curr_stitch),
-		div({ class: "stitch", style: () => `transform: translateX(${next_pos.val}em) scale(${next_size.val});` }, next_stitch),
-		div({ class: "stitch", style: () => `transform: translateX(${next_next_pos.val}em) scale(${next_next_size.val});` }, next_next_stitch),
+	const outOfBoundsClass = (idx: number) => {
+		console.log(curr_stitch.val);
+		if (idx === -1 || idx === stitches.val.length) {
+			return "highlight";
+		}
+		return "";
+	}
+
+	const banner = Banner(
+		div({
+			class: () => `stitch ${outOfBoundsClass(snapped_index.val - 1)}`,
+			style: () => `transform: translateX(${prev_pos.val}em) scale(${prev_size.val});`
+		}, prev_stitch),
+		div({
+			class: () => `stitch ${outOfBoundsClass(snapped_index.val)}`,
+			style: () => `transform: translateX(${curr_pos.val}em) scale(${curr_size.val});`
+		}, curr_stitch),
+		div({
+			class: () => `stitch ${outOfBoundsClass(snapped_index.val + 1)}`,
+			style: () => `transform: translateX(${next_pos.val}em) scale(${next_size.val});`
+		}, next_stitch),
+		div({
+			class: () => `stitch ${outOfBoundsClass(snapped_index.val + 2)}`,
+			style: () => `transform: translateX(${next_next_pos.val}em) scale(${next_next_size.val});`
+		}, next_next_stitch),
 	);
+	banner.className = "stitch-banner";
+	return banner;
 };
 export default StitchDisplay;

@@ -68,6 +68,9 @@ export class SingleStitch extends BaseStitch {
 		if (label.endsWith("inc")) {
 			return new IncStitch(label);
 		}
+		if (label[0] === "`" && label[label.length - 1] === "`") {
+			return new CommentStitch(label.substring(1, label.length - 1));
+		}
 		return new SingleStitch(label);
 	}
 }
@@ -81,9 +84,6 @@ export class RepeatStitch extends BaseStitch {
 	}
 
 	get length() {
-		if (this.repeat === 0) {
-			return 0;
-		}
 		return this.children[0].length * this.repeat;
 	}
 
@@ -113,6 +113,21 @@ export class SincStitch extends SingleStitch {
 
 	get length() {
 		return 3
+	}
+
+	getChild(idx: number): SingleStitch | undefined {
+		return this.children[idx] as SingleStitch;
+	}
+}
+
+export class CommentStitch extends SingleStitch {
+	constructor(label: string) {
+		super(label);
+		this.children = [new SingleStitch(label)];
+	}
+
+	get length() {
+		return 1
 	}
 
 	getChild(idx: number): SingleStitch | undefined {
